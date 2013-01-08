@@ -24,7 +24,6 @@ module OmniAuth
             params[k.to_sym] = request.params[k] unless [nil, ''].include?(request.params[k])
           end
           scopes = (params[:scope] || DEFAULT_SCOPE).split(",")
-          @scope = scopes # not sure if this is needed...
           scopes.map! { |s| s =~ /^https?:\/\// ? s : "#{base_scope_url}#{s}" }
           params[:scope] = scopes.join(' ')
           # This makes sure we get a refresh_token.
@@ -54,7 +53,7 @@ module OmniAuth
       extra do
         hash = {}
         hash[:raw_info] = raw_info unless skip_info?
-        hash[:plus_info] = plus_info if @scopes.include?("plus.me") 
+        hash[:plus_info] = plus_info
         prune! hash
       end
 
