@@ -53,11 +53,16 @@ module OmniAuth
       extra do
         hash = {}
         hash[:raw_info] = raw_info unless skip_info?
+        hash[:plus_info] = plus_info if (params[:scope] || DEFAULT_SCOPE).split(",").include?("plus.me") 
         prune! hash
       end
 
       def raw_info
         @raw_info ||= access_token.get('https://www.googleapis.com/oauth2/v1/userinfo').parsed
+      end
+
+      def plus_info
+        @plus_info ||= access_token.get('https://www.googleapis.com/plus/v1/people/me').parsed
       end
 
       private
